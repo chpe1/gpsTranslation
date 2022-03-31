@@ -8,7 +8,6 @@ Utilisation :
 
 python gps.py -- file mon_fichier_de_donnees.csv
 
-@author : Jérôme Noiret
 
 """
 import requests
