@@ -1,11 +1,16 @@
 """
-Ce script convertit des coordonnées GPS en adresses postales.
-Il utilise l'API Open Street Map.
-Il nécessite un fichier de données csv de deux colonnes:
-   Une colonne avec la longitude, une colonne avec la latitude.
+This script converts (geocode) GPS coordinates into postal addresses.
+It uses the Open Street Map API.
+It requires as input a csv data file with two columns without title:
+   One column with the longitude, one column with the latitude.
+   The separator is the comma.
+   The two columns must be of the same length.
+It returns a file results.csv located in the directory where the script is launched.
+The GPS coordinates must be in the form 50.12345,4.12345
 
-Utilisation :
+Usage :
 
+pip install --upgrade -r requirements.txt
 python gps.py -- file mon_fichier_de_donnees.csv
 
 
@@ -15,7 +20,6 @@ import csv
 import argparse
 
 
-# Lecture des arguments de la ligne de commande
 parser = argparse.ArgumentParser(
     description='Récupération des coordonnées GPS')
 parser.add_argument('--file', metavar='-F',
