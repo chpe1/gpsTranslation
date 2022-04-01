@@ -9,8 +9,9 @@ Les coordonnées GPS doivent être sous la forme 50.12345 4.12345
 
 
 Open street map : https://www.openstreetmap.fr/ est une carte coopérative libre.
-Coopérative signifie que ceux sont les utilisateurs qui complète cette base de données. Elle peut donc contenir des erreurs.
+Coopérative signifie que ceux sont les utilisateurs qui complètent cette base de données. Elle peut donc contenir des erreurs.
 Merci de vérifier les informations retournées par ce script avant toute utilisation importante.
+Je décline toute responsabilité en cas de résultats erronés.
 
 Utilisation :
 
