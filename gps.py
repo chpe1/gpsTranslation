@@ -33,7 +33,8 @@ def write_csv(liste):
                 print(resp.json()['display_name'])
                 writer.writerow([row[0], row[1], resp.json()['display_name']])
             else:
-                print("Coordonnées GPS invalides")
+                return "Erreur dans l'exécution du fichier : Coordonnées GPS invalides"
+    return "Fichier généré avec succès"
 
 
 # print(read_csv(args.file)
