@@ -5,37 +5,77 @@ import re
 
 
 parser = argparse.ArgumentParser(
-    description='Récupération des coordonnées GPS')
+    description='Imported GPS coordinates in decimal or DMS format')
 parser.add_argument('--file', metavar='-F',
-                    help='Fichier contenant les données')
+                    help='File containing the data', required=True)
 args = parser.parse_args()
+
+# 48° 51′ 29″ N
+lat_DMS = re.compile(
+    r'[\+-]?(([1-8]?\d)\D+([1-5]?\d|60)\D+([1-5]?\d|60)(\.\d+)?|90\D+0\D+0)\D+[NSns]?')
+# 02° 17′ 40″ E
+lng_DMS = re.compile(
+    r'[\+-]?([1-7]?\d{1,2}\D+([1-5]?\d|60)\D+([1-5]?\d|60)(\.\d+)?|180\D+0\D+0)\D+[EWew]?')
+# 48.8583306
+lat_DECIMAL = re.compile(r'^(-?[1-8]?\d(?:\.\d{1,18})?|90(?:\.0{1,18})?)$')
+# 2.29451111
+lng_DECIMAL = re.compile(
+    r'^((-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,18})?|180(?:\.0{1,18})?))$')
+
+
+def convert_DMS_to_Decimal(coordonnees_GPS):
+    """
+        Convert DMS format to decimal degree format
+    """
+    direction = {'N': 1, 'S': -1, 'E': 1, 'W': -1}
+    new = ''
+    for i in coordonnees_GPS:
+        if i.isdigit():
+            new += i
+        elif i in direction:
+            new += i
+        else:
+            new += ' '
+    new = new.split()
+    new_dir = new.pop()
+    if new[3] is not None:
+        new[2] = str(new[2]) + '.' + str((new[3]))
+        del new[3]
+    return (int(new[0])+int(new[1])/60.0+float(new[2])/3600.0) * direction[new_dir]
 
 
 def read_csv(file):
     coord = []
-    with open(file, 'r') as f:
+    with open(file, 'r', encoding="utf-8") as f:
         my_reader = csv.reader(f)
         for row in my_reader:
-            coord.append([row[0], row[1]])
+            # check if GPS coordinates is decimal format
+            if re.match(lat_DECIMAL, row[0]) and re.match(lng_DECIMAL, row[1]):
+                coord.append([row[0], row[1]])
+            # check if GPS coordinates is DMS format
+            elif re.match(lat_DMS, row[0]) and re.match(lng_DMS, row[1]):
+                coord.append([convert_DMS_to_Decimal(row[0]),
+                             convert_DMS_to_Decimal(row[1])])
+            # return error if coordinates are not in DMS or decimal format
+            else:
+                return "This script only works with decimal or DMS format"
     return coord
 
 
 def write_csv(liste):
-    with open('resultats.csv', 'w', newline='') as ft:
+    """
+        Write coordinates in csv file where the name is results.csv
+    """
+    with open('results.csv', 'w', newline='', encoding="utf-8") as ft:
         writer = csv.writer(ft)
         for row in liste:
-            # check GPS coordinates format
-            if re.match(r'((?:[\+-]?[0-9]*[\.,][0-9]+)|(?:[\+-]?[0-9]+))', row[0]) and re.match(r'((?:[\+-]?[0-9]*[\.,][0-9]+)|(?:[\+-]?[0-9]+))', row[1]):
-                payload = {'format': "jsonv2",
-                           'lat': row[0], 'lon': row[1], 'zoom': 18, 'addressdetails': 1}
-                resp = requests.get(
-                    "https://nominatim.openstreetmap.org/reverse?", params=payload)
-                print(resp.json()['display_name'])
-                writer.writerow([row[0], row[1], resp.json()['display_name']])
-            else:
-                return "Erreur dans l'exécution du fichier : Coordonnées GPS invalides"
-    return "Fichier généré avec succès"
+            payload = {'format': "jsonv2",
+                       'lat': row[0], 'lon': row[1], 'zoom': 18, 'addressdetails': 1}
+            resp = requests.get(
+                "https://nominatim.openstreetmap.org/reverse?", params=payload)
+            print(resp.json()['display_name'])
+            writer.writerow([row[0], row[1], resp.json()['display_name']])
+    print("File results.csv generated with success")
 
 
-# print(read_csv(args.file)
 write_csv(read_csv(args.file))
