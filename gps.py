@@ -23,13 +23,22 @@ lng_DECIMAL = re.compile(
     r'^((-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,18})?|180(?:\.0{1,18})?))$')
 
 
-def convert_DMS_to_Decimal(coordonnees_GPS):
+def find_separator(file):
+    """
+        Find the separator of the file
+    """
+    with open(file, 'r', encoding="utf-8") as f:
+        dialect = csv.Sniffer().sniff(f.read(1024))
+        return dialect.delimiter
+
+
+def convert_dmstodecimal(coordonnees_gps):
     """
         Convert DMS format to decimal degree format
     """
     direction = {'N': 1, 'S': -1, 'E': 1, 'W': -1}
     new = ''
-    for i in coordonnees_GPS:
+    for i in coordonnees_gps:
         if i.isdigit():
             new += i
         elif i in direction:
@@ -44,18 +53,18 @@ def convert_DMS_to_Decimal(coordonnees_GPS):
     return (int(new[0])+int(new[1])/60.0+float(new[2])/3600.0) * direction[new_dir]
 
 
-def read_csv(file):
+def read_csv(file, separator):
     coord = []
     with open(file, 'r', encoding="utf-8") as f:
-        my_reader = csv.reader(f)
+        my_reader = csv.reader(f, delimiter=separator)
         for row in my_reader:
             # check if GPS coordinates is decimal format
             if re.match(lat_DECIMAL, row[0]) and re.match(lng_DECIMAL, row[1]):
                 coord.append([row[0], row[1]])
             # check if GPS coordinates is DMS format
             elif re.match(lat_DMS, row[0]) and re.match(lng_DMS, row[1]):
-                coord.append([convert_DMS_to_Decimal(row[0]),
-                             convert_DMS_to_Decimal(row[1])])
+                coord.append([convert_dmstodecimal(row[0]),
+                             convert_dmstodecimal(row[1])])
             # return error if coordinates are not in DMS or decimal format
             else:
                 return "This script only works with decimal or DMS format"
@@ -78,4 +87,5 @@ def write_csv(liste):
     print("File results.csv generated with success")
 
 
-write_csv(read_csv(args.file))
+sep = find_separator(args.file)
+write_csv(read_csv(args.file, sep))
