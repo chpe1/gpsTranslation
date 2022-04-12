@@ -4,7 +4,7 @@ This script converts (geocode) GPS coordinates to DMS format (40° 22′ 44″ N
 It uses the Open Street Map API.
 It requires as input a csv data file with two columns without title:
    One column with the longitude, one column with the latitude.
-   The separator is the comma.
+   The separator can be comma, semi-colon, pipe or tab
    The two columns must be of the same length.
 It returns a file results.csv located in the directory where the script is launched.
 The GPS coordinates must be to DMS format (40° 22′ 44″ N, 77° 55′ 56″ W
@@ -28,7 +28,7 @@ Ce script convertit (géocode) des coordonnées GPS au format DMS (40° 22′ 44
 Il utilise l'API Open Street Map.
 Il nécessite en entrée un fichier de données csv de deux colonnes sans titre:
    Une colonne avec la longitude, une colonne avec la latitude.
-   Le séparateur est la virgule.
+   Le séparateur peut-être la virgule, le point-virgule, le pipe ou la tabulation
    Les deux colonnes doivent être de même longueur.
 Il retourne un fichier results.csv situé dans le répertoire où est lancé le script.
 Les coordonnées GPS doivent être au format DMS (40° 22′ 44″ N, 77° 55′ 56″ W
