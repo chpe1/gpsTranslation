@@ -54,6 +54,9 @@ def convert_dmstodecimal(coordonnees_gps):
 
 
 def read_csv(file, separator):
+    """
+        Read the input file and return a list of coordinates
+    """
     coord = []
     with open(file, 'r', encoding="utf-8") as f:
         my_reader = csv.reader(f, delimiter=separator)

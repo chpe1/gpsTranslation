@@ -18,6 +18,7 @@ I decline any responsibility in case of erroneous results.
 USAGE :
 
 pip install --upgrade -r requirements.txt
+
 python gps.py -- file mon_fichier_de_donnees.csv
 
 ------------------------------------------------------------------------------------------------------
@@ -43,4 +44,5 @@ Je décline toute responsabilité en cas de résultats erronés.
 Utilisation :
 
 pip install --upgrade -r requirements.txt
+
 python gps.py -- file mon_fichier_de_donnees.csv
