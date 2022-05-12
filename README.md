@@ -11,9 +11,9 @@
 This script converts (geocode) GPS coordinates to DMS format (40° 22′ 44″ N, 77° 55′ 56″ W) or decimal (50.1234567, 3.1234567) into postal addresses.  
 It uses the Open Street Map API.  
 It requires as input a csv data file with two columns without title:  
-   >One column with the longitude, one column with the latitude.  
-   >The separator can be comma, semi-colon, pipe or tab.  
-   >The two columns must be of the same length.  
+   `* One column with the longitude, one column with the latitude. ` 
+   `* The separator can be comma, semi-colon, pipe or tab.  `
+   `* The two columns must be of the same length.  `
 It returns a file results.csv located in the directory where the script is launched.  
 The GPS coordinates must be to DMS format (40° 22′ 44″ N, 77° 55′ 56″ W) or decimal (50.1234567, 3.1234567).  
 

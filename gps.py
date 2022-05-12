@@ -61,6 +61,9 @@ def read_csv(file, separator):
     with open(file, 'r', encoding="utf-8") as f:
         my_reader = csv.reader(f, delimiter=separator)
         for row in my_reader:
+            # delete space around the string
+            row[0] = row[0].strip()
+            row[1] = row[1].strip()
             # check if GPS coordinates is decimal format
             if re.match(lat_DECIMAL, row[0]) and re.match(lng_DECIMAL, row[1]):
                 coord.append([row[0], row[1]])
@@ -70,7 +73,7 @@ def read_csv(file, separator):
                              convert_dmstodecimal(row[1])])
             # return error if coordinates are not in DMS or decimal format
             else:
-                return "This script only works with decimal or DMS format"
+                return []
     return coord
 
 
@@ -80,14 +83,17 @@ def write_csv(liste):
     """
     with open('results.csv', 'w', newline='', encoding="utf-8") as ft:
         writer = csv.writer(ft)
-        for row in liste:
-            payload = {'format': "jsonv2",
-                       'lat': row[0], 'lon': row[1], 'zoom': 18, 'addressdetails': 1}
-            resp = requests.get(
-                "https://nominatim.openstreetmap.org/reverse?", params=payload)
-            print(resp.json()['display_name'])
-            writer.writerow([row[0], row[1], resp.json()['display_name']])
-    print("File results.csv generated with success")
+        if liste == []:
+            return 'This script only works with decimal or DMS format'
+        else:
+            for row in liste:
+                payload = {'format': "jsonv2",
+                           'lat': row[0], 'lon': row[1], 'zoom': 18, 'addressdetails': 1}
+                resp = requests.get(
+                    "https://nominatim.openstreetmap.org/reverse?", params=payload)
+                print(resp.json()['display_name'])
+                writer.writerow([row[0], row[1], resp.json()['display_name']])
+            print("File results.csv generated with success")
 
 
 sep = find_separator(args.file)
