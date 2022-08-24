@@ -1,6 +1,8 @@
-gps1.csv
-gps2.csv
-resultats.csv
-results.csv
-essai.csv
+*.csv
 launch.json
+*.exe
+*.spec
+/dist
+/build
+gps_translation.py
+/__pycache__

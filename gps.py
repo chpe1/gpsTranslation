@@ -10,6 +10,36 @@ parser.add_argument('--file', metavar='-F',
                     help='File containing the data', required=True)
 args = parser.parse_args()
 
+def print_logo():
+    print('''
+   _____ _____   _____   _______ _____            _   _  _____ _            _______ _____ ____  _   _ 
+  / ____|  __ \ / ____| |__   __|  __ \     /\   | \ | |/ ____| |        /\|__   __|_   _/ __ \| \ | |
+ | |  __| |__) | (___      | |  | |__) |   /  \  |  \| | (___ | |       /  \  | |    | || |  | |  \| |
+ | | |_ |  ___/ \___ \     | |  |  _  /   / /\ \ | . ` |\___ \| |      / /\ \ | |    | || |  | | . ` |
+ | |__| | |     ____) |    | |  | | \ \  / ____ \| |\  |____) | |____ / ____ \| |   _| || |__| | |\  |
+  \_____|_|    |_____/     |_|  |_|  \_\/_/    \_\_| \_|_____/|______/_/    \_\_|  |_____\____/|_| \_|
+                                                                                                      
+    ''')
+
+    print("v1.1.0\n")
+
+
+def print_info():
+    print("This script converts(geocode) GPS coordinates to DMS format(40° 22′ 44″ N, 77° 55′ 56″ W) or decimal(50.1234567, 3.1234567) into postal addresses.")
+    print("It uses the Open Street Map API.")
+    print("It requires as input a csv data file with two columns without title:")
+    print("* One column with the longitude, one column with the latitude.")
+    print("* The separator can be comma, semi-colon, pipe or tab.")
+    print("* The two columns must be of the same length.")
+    print("It returns a file results.csv located in the directory where the script is launched.")
+    print("The GPS coordinates must be to DMS format(40° 22′ 44″ N, 77° 55′ 56″ W) or decimal(50.1234567, 3.1234567).\n")
+
+
+# Start the program
+print_logo()
+print_info()
+
+
 # 48° 51′ 29″ N
 lat_DMS = re.compile(
     r'[\+-]?(([1-8]?\d)\D+([1-5]?\d|60)\D+([1-5]?\d|60)(\.\d+)?|90\D+0\D+0)\D+[NSns]?')
