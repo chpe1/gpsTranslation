@@ -22,7 +22,7 @@ def print_logo():
                                                                                                       
     ''')
 
-    print("v1.1.0\n")
+    print("v1.2.0\n")
 
 
 def print_info():
