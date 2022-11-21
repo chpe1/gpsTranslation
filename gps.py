@@ -10,6 +10,7 @@ parser.add_argument('--file', metavar='-F',
                     help='File containing the data', required=True)
 args = parser.parse_args()
 
+
 def print_logo():
     print('''
    _____ _____   _____   _______ _____            _   _  _____ _            _______ _____ ____  _   _ 
@@ -88,9 +89,12 @@ def read_csv(file, separator):
         Read the input file and return a list of coordinates
     """
     coord = []
+    tour = 0
+    erreur = 0
     with open(file, 'r', encoding="utf-8") as f:
         my_reader = csv.reader(f, delimiter=separator)
         for row in my_reader:
+            tour += 1
             # delete space around the string
             row[0] = row[0].strip()
             row[1] = row[1].strip()
@@ -103,7 +107,9 @@ def read_csv(file, separator):
                              convert_dmstodecimal(row[1])])
             # return error if coordinates are not in DMS or decimal format
             else:
-                return []
+                erreur += 1
+                print("Erreur numéro " + str(erreur) +
+                      " trouvée : Format de coordonnées GPS non reconnu à la ligne : " + str(tour))
     return coord
 
 
